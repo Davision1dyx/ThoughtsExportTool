@@ -425,20 +425,25 @@ class YunxiaoLocalExporter:
                                     if (tag === 'table') {
                                         const rows = el.querySelectorAll('tr');
                                         if (rows.length > 0) {
-                                            rows.forEach((row, rowIdx) => {
+                                            let isFirstNonEmptyRow = true;
+                                            
+                                            rows.forEach((row) => {
                                                 const cells = row.querySelectorAll('td, th');
                                                 const cellTexts = Array.from(cells).map(cell => {
                                                     const content = cell.querySelector('[data-slate-content="true"]');
                                                     return content ? content.textContent.trim() : cell.textContent.trim();
                                                 });
                                                 
-                                                if (cellTexts.some(t => t)) {
-                                                    result.push('| ' + cellTexts.join(' | ') + ' |');
-                                                    
-                                                    if (rowIdx === 0) {
-                                                        const separators = cellTexts.map(() => '---');
-                                                        result.push('| ' + separators.join(' | ') + ' |');
-                                                    }
+                                                // 跳过空行
+                                                if (!cellTexts.some(t => t)) return;
+                                                
+                                                result.push('| ' + cellTexts.join(' | ') + ' |');
+                                                
+                                                // 第一个非空行后添加分隔行（表头）
+                                                if (isFirstNonEmptyRow) {
+                                                    const separators = cellTexts.map(() => '---');
+                                                    result.push('| ' + separators.join(' | ') + ' |');
+                                                    isFirstNonEmptyRow = false;
                                                 }
                                             });
                                             result.push('');
