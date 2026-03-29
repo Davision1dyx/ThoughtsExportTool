@@ -1,51 +1,51 @@
-# 阿里云云效知识库导出工具
+# Alibaba Cloud Yunxiao Knowledge Base Export Tool
 
-一个用于批量导出阿里云云效（Thoughts）知识库文档到本地 Markdown 文件的工具。
+A tool for batch exporting documents from Alibaba Cloud Yunxiao (Thoughts) knowledge base to local Markdown files.
 
-## 功能特性
+## Features
 
-- 📚 **批量导出**：支持导出整个知识库的所有文档
-- 📁 **保留结构**：保持原有的文件夹层级结构
-- 📝 **Markdown 格式**：导出为标准的 Markdown 格式
-- 🖼️ **图片支持**：自动提取文档中的图片并保留链接
-- 💻 **代码块**：保留代码块的格式和语法高亮信息
-- 📊 **表格支持**：将表格转换为 Markdown 表格格式
-- 🔄 **顺序保持**：保持文档内容的原始顺序
+- 📚 **Batch Export**: Supports exporting all documents from the entire knowledge base
+- 📁 **Structure Preservation**: Maintains the original folder hierarchy structure
+- 📝 **Markdown Format**: Exports to standard Markdown format
+- 🖼️ **Image Support**: Automatically extracts images from documents and preserves links
+- 💻 **Code Blocks**: Preserves code block formatting and syntax highlighting information
+- 📊 **Table Support**: Converts tables to Markdown table format
+- 🔄 **Order Preservation**: Maintains the original order of document content
 
-## 环境要求
+## Requirements
 
 - Python 3.8+
 - Playwright
 
-## 安装
+## Installation
 
-1. 克隆或下载本项目
+1. Clone or download this project
 
-2. 安装 Python 依赖：
+2. Install Python dependencies:
 
 ```bash
 pip install playwright
-playwright install chromium
+playwright install
 ```
 
-## 配置
+## Configuration
 
-1. 打开 `config.json` 文件
+1. Open the `config.json` file
 
-2. 配置 Cookie：
-   - 登录阿里云云效（https://thoughts.aliyun.com）
-   - 打开浏览器开发者工具（F12）
-   - 切换到 Network 标签页
-   - 刷新页面，找到任意 API 请求
-   - 复制请求头中的 Cookie 值
-   - 粘贴到 `config.json` 的 `cookies` 字段
+2. Configure Cookie:
+   - Log in to Alibaba Cloud Yunxiao (https://thoughts.aliyun.com)
+   - Open browser developer tools (F12)
+   - Switch to the Network tab
+   - Refresh the page and find any API request
+   - Copy the Cookie value from the request headers
+   - Paste it into the `cookies` field in `config.json`
 
-3. 配置知识库 ID：
-   - 打开要导出的知识库
-   - 从 URL 中复制知识库 ID（如 `https://thoughts.aliyun.com/workspaces/xxx` 中的 `xxx`）
-   - 粘贴到 `config.json` 的 `selected_workspaces` 数组中
+3. Configure Workspace ID:
+   - Open the knowledge base you want to export
+   - Copy the workspace ID from the URL (e.g., `xxx` from `https://thoughts.aliyun.com/workspaces/xxx`)
+   - Paste it into the `selected_workspaces` array in `config.json`
 
-示例配置：
+Example configuration:
 
 ```json
 {
@@ -55,61 +55,61 @@ playwright install chromium
 }
 ```
 
-## 使用方法
+## Usage
 
-运行主程序：
+Run the main program:
 
 ```bash
 python3 run_local_export.py
 ```
 
-程序将自动：
-1. 获取知识库中的所有文档列表
-2. 逐个访问文档页面
-3. 提取文档内容并转换为 Markdown
-4. 按照原文件夹结构保存到 `output` 目录
+The program will automatically:
+1. Get the list of all documents in the knowledge base
+2. Visit each document page one by one
+3. Extract document content and convert to Markdown
+4. Save to the `output` directory according to the original folder structure
 
-## 输出结构
+## Output Structure
 
 ```
 output/
-└── 知识库名称/
-    ├── 文件夹1/
-    │   ├── 文档1.md
-    │   └── 文档2.md
-    ├── 文件夹2/
-    │   └── 文档3.md
-    └── 文档4.md
+└── WorkspaceName/
+    ├── Folder1/
+    │   ├── Document1.md
+    │   └── Document2.md
+    ├── Folder2/
+    │   └── Document3.md
+    └── Document4.md
 ```
 
-## 注意事项
+## Notes
 
-1. **Cookie 有效期**：Cookie 可能会过期，如遇 401 错误请重新获取
-2. **导出时间**：根据文档数量，导出可能需要较长时间（每篇文档约 3-5 秒）
-3. **网络连接**：需要稳定的网络连接
-4. **权限**：确保账号有访问目标知识库的权限
+1. **Cookie Validity**: Cookies may expire. If you encounter a 401 error, please obtain a new Cookie
+2. **Export Time**: Depending on the number of documents, export may take a long time (approximately 3-5 seconds per document)
+3. **Network Connection**: Requires stable network connection
+4. **Permissions**: Ensure your account has access to the target knowledge base
 
-## 故障排除
+## Troubleshooting
 
-### 401 Unauthorized 错误
+### 401 Unauthorized Error
 
-Cookie 已过期，请重新从浏览器获取最新的 Cookie。
+The Cookie has expired. Please obtain the latest Cookie from your browser again.
 
-### 文档内容为空
+### Empty Document Content
 
-可能是页面加载超时，可以尝试增加脚本中的等待时间。
+This may be due to page loading timeout. You can try increasing the wait time in the script.
 
-### 图片无法显示
+### Images Not Displaying
 
-导出的 Markdown 文件中的图片链接是原始链接，需要网络访问权限才能查看。如需离线查看，需要额外下载图片。
+The image links in the exported Markdown files are original links and require network access to view. For offline viewing, you need to download the images separately.
 
-## 技术说明
+## Technical Notes
 
-本工具使用 Playwright 模拟浏览器行为，因为云效文档内容是通过 WebSocket 动态加载的，无法直接通过 HTTP API 获取。
+This tool uses Playwright to simulate browser behavior because Yunxiao document content is dynamically loaded via WebSocket and cannot be obtained directly through HTTP API.
 
-## 免责声明
+## Disclaimer
 
-本工具仅供学习和个人备份使用，请遵守阿里云云效的使用条款和相关法律法规。
+This tool is for learning and personal backup purposes only. Please comply with Alibaba Cloud Yunxiao's terms of service and relevant laws and regulations.
 
 ## License
 
